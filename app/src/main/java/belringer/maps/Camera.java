@@ -23,10 +23,6 @@ public class Camera {
         currentLookAt[2] = z;
     }
 
-    private static final float DISTANCE_FROM_LOCATION = 6.0f;
-    private static final float CAMERA_HEIGHT = 4.0f;
-    private static final float LOCATION_AERIAL_HEIGHT = 15.f;
-
     private static float angleFromDir(float[] dir) {
         return (float) Math.toDegrees((Math.atan2(1.f, 0) - Math.atan2(-dir[2], dir[0])));
     }
@@ -53,10 +49,10 @@ public class Camera {
     void lookAt(float[] lookAt, float[] dir, CameraType cameraType, boolean animate) {
         if (cameraType == CameraType.AERIAL) {
             nextAngle = 0.f;
-            nextPos = new float[]{lookAt[0], lookAt[1] + LOCATION_AERIAL_HEIGHT, lookAt[2]};
+            nextPos = new float[]{lookAt[0], lookAt[1] + Constants.AERIAL_CAMERA_HEIGHT, lookAt[2]};
         } else { // CHASE
             nextAngle = angleFromDir(dir);
-            nextPos = new float[]{lookAt[0] - dir[0] * DISTANCE_FROM_LOCATION, lookAt[1] + CAMERA_HEIGHT, lookAt[2] - dir[2] * DISTANCE_FROM_LOCATION};
+            nextPos = new float[]{lookAt[0] - dir[0] * Constants.CHASE_CAMERA_DISTANCE_FROM_LOCATION, lookAt[1] + Constants.CHASE_CAMERA_HEIGHT, lookAt[2] - dir[2] * Constants.CHASE_CAMERA_DISTANCE_FROM_LOCATION};
         }
 
         if (!animate) {

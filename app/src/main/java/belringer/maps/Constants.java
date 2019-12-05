@@ -11,6 +11,9 @@ class Constants {
     static final float GROUND_WIDTH = 1000.f;
     static final int AVENUE_COUNT = 25;
     static final int STREET_COUNT = 25;
+    static final float CHASE_CAMERA_DISTANCE_FROM_LOCATION = 6.0f;
+    static final float CHASE_CAMERA_HEIGHT = 4.0f;
+    static final float AERIAL_CAMERA_HEIGHT = 15.f;
 
     // Location halo animation constants.
     static final int HALO_PULSE_PERIOD = 2000; // 2 seconds per full pulse

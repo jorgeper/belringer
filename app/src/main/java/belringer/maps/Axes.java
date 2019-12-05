@@ -10,7 +10,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 class Axes {
-    private static int program = -1;
     private static float[] axesCoords = {
             0.f, 0.f, 0.f, // center
             1.f, 0.f, 0.0f, // x
@@ -20,6 +19,7 @@ class Axes {
             0.f, 0.f, 1.0f  // z
     };
 
+    private int program;
     private FloatBuffer vertexBuffer;
     private float[] RED = {1.f, 0.f, 0.f, 0.5f};
     private float[] GREEN = {0.f, 1.f, 0.f, 0.5f};
@@ -33,18 +33,16 @@ class Axes {
         vertexBuffer.put(axesCoords);
         vertexBuffer.position(0);
 
-        if (program == -1) {
-            String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
-            int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-            String fragmentShaderCode = Util.readTextFile(context, R.raw.simple_fragment_shader);
-            int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
+        int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        String fragmentShaderCode = Util.readTextFile(context, R.raw.simple_fragment_shader);
+        int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-            program = GLES20.glCreateProgram();
+        program = GLES20.glCreateProgram();
 
-            GLES20.glAttachShader(program, vertextShader);
-            GLES20.glAttachShader(program, fragmentShader);
-            GLES20.glLinkProgram(program);
-        }
+        GLES20.glAttachShader(program, vertextShader);
+        GLES20.glAttachShader(program, fragmentShader);
+        GLES20.glLinkProgram(program);
     }
 
     void draw(float[] mvpMatrix) {

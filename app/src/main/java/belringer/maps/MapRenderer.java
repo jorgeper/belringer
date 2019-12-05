@@ -134,13 +134,14 @@ public class MapRenderer implements GLSurfaceView.Renderer {
 
         // Clear up the frame, using the sky color. We'll start laying out the rest of the layers
         // on top.
+        GLES20.glClearColor(0.507f, 0.83f, 0.84f, 1.0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         ground.draw(groundM, Constants.GROUND_COLOR, fogColor);
         roads.draw(vpMatrix, fogColor);
         location.draw(vpMatrix);
 
         // Debugging aids.
-        grid.draw(vpMatrix);
+        grid.draw(vpMatrix, fogColor);
         axes.draw(vpMatrix);
     }
 

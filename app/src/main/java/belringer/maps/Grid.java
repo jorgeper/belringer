@@ -1,6 +1,7 @@
 package belringer.maps;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.opengl.GLES20;
 
 import com.example.opengltest.R;
@@ -10,9 +11,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 class Grid {
-    private static int program = -1;
-    private static float GRID_COLOR[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+    private static float[] GRID_COLOR = {0.5f, 0.5f, 0.5f, 0.5f};
 
+    private int program;
     private FloatBuffer vertexBuffer;
     private float[] coords;
 
@@ -54,21 +55,19 @@ class Grid {
         vertexBuffer.put(coords);
         vertexBuffer.position(0);
 
-        if (program == -1) {
-            String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
-            int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-            String fragmentShaderCode = Util.readTextFile(context, R.raw.fog_fragment_shader);
-            int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
+        int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        String fragmentShaderCode = Util.readTextFile(context, R.raw.fog_fragment_shader);
+        int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-            program = GLES20.glCreateProgram();
+        program = GLES20.glCreateProgram();
 
-            GLES20.glAttachShader(program, vertextShader);
-            GLES20.glAttachShader(program, fragmentShader);
-            GLES20.glLinkProgram(program);
-        }
+        GLES20.glAttachShader(program, vertextShader);
+        GLES20.glAttachShader(program, fragmentShader);
+        GLES20.glLinkProgram(program);
     }
 
-    void draw(float[] mvpMatrix) {
+    void draw(float[] mvpMatrix, Color fogColor) {
         GLES20.glUseProgram(program);
         int positionHandle = GLES20.glGetAttribLocation(program, "vPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
@@ -76,6 +75,9 @@ class Grid {
 
         int colorHandle = GLES20.glGetUniformLocation(program, "vColor");
         GLES20.glUniform4fv(colorHandle, 1, GRID_COLOR, 0);
+
+        int fogColorHandle = GLES20.glGetUniformLocation(program, "vFogColor");
+        GLES20.glUniform4fv(fogColorHandle, 1, fogColor.getComponents(), 0);
 
         int vPMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0);

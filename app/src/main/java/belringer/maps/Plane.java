@@ -12,11 +12,9 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 public class Plane{
-    private static int program = -1;
-
+    private int program;
     private FloatBuffer vertexBuffer;
     private ShortBuffer drawListBuffer;
-
     private float coords[];
     private short indices[];
 
@@ -40,18 +38,16 @@ public class Plane{
         drawListBuffer.put(indices);
         drawListBuffer.position(0);
 
-        if (program == -1) {
-            String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
-            int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-            String fragmentShaderCode = Util.readTextFile(context, R.raw.fog_fragment_shader);
-            int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        String vertexShaderCode = Util.readTextFile(context, R.raw.simple_vertex_shader);
+        int vertextShader = MapRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        String fragmentShaderCode = Util.readTextFile(context, R.raw.fog_fragment_shader);
+        int fragmentShader = MapRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-            program = GLES20.glCreateProgram();
+        program = GLES20.glCreateProgram();
 
-            GLES20.glAttachShader(program, vertextShader);
-            GLES20.glAttachShader(program, fragmentShader);
-            GLES20.glLinkProgram(program);
-        }
+        GLES20.glAttachShader(program, vertextShader);
+        GLES20.glAttachShader(program, fragmentShader);
+        GLES20.glLinkProgram(program);
     }
 
     private void makePlane(int width, int height, float stepW, float stepH) {
