@@ -19,8 +19,6 @@ import android.util.AttributeSet;
  *
  */
 public class MapView extends GLSurfaceView {
-    private float nextX;
-    private float nextZ;
     private MapRenderer renderer;
 
     public MapView(Context context, AttributeSet attrs) {
@@ -40,8 +38,6 @@ public class MapView extends GLSurfaceView {
     }
 
     public void moveBy(float dx, float dz) {
-        nextX = nextX + dx;
-        nextZ = nextZ + dz;
-        renderer.moveTo(nextX, nextZ);
+        renderer.moveBy(dx, dz);
     }
 }
