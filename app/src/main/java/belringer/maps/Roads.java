@@ -28,7 +28,7 @@ class Roads {
             streets.add(street);
             Text name = new Text(context, city.getStreetName(i), Constants.ROAD_TEXT_COLOR,
                     0,
-                    (i * CityModel.STREET_BLOCK_WIDTH) - (Constants.ROAD_LABEL_HEIGHT) / 2.f,
+                    (i * CityModel.AVENUE_BLOCK_HEIGHT) - (Constants.ROAD_LABEL_HEIGHT) / 2.f,
                     Constants.ROAD_LABEL_HEIGHT);
             streetNames.add(name);
         }
@@ -39,7 +39,7 @@ class Roads {
             Plane street = new Plane(context, 2, 2, Constants.ROAD_WIDTH, CityModel.AVENUE_LENGTH);
             avenues.add(street);
             Text name = new Text(context, city.getAvenueName(i), Constants.ROAD_TEXT_COLOR,
-                    (i * CityModel.AVENUE_BLOCK_WIDTH) - (Constants.ROAD_LABEL_HEIGHT) / 2.f,
+                    (i * CityModel.STREET_BLOCK_WIDTH) - (Constants.ROAD_LABEL_HEIGHT) / 2.f,
                     0,
                     Constants.ROAD_LABEL_HEIGHT);
             avenueNames.add(name);
@@ -61,7 +61,7 @@ class Roads {
             Matrix.translateM(translationM, 0,
                     0,
                     0,
-                    i * CityModel.STREET_BLOCK_WIDTH - Constants.ROAD_WIDTH /2.f);
+                    i * CityModel.AVENUE_BLOCK_HEIGHT - Constants.ROAD_WIDTH /2.f);
 
             Matrix.multiplyMM(scratchM, 0, vPMatrix, 0, translationM, 0);
             streets.get(i).draw(scratchM, streetColor, Constants.FOG_COLOR);
@@ -70,7 +70,7 @@ class Roads {
         for (int i = 0; i < avenues.size(); ++i) {
             Matrix.setIdentityM(translationM, 0);
             Matrix.translateM(translationM, 0,
-                    i * CityModel.AVENUE_BLOCK_WIDTH - Constants.ROAD_WIDTH /2.f,
+                    i * CityModel.STREET_BLOCK_WIDTH - Constants.ROAD_WIDTH /2.f,
                     0,
                     0);
 
@@ -118,36 +118,5 @@ class Roads {
                 d += DISTANCE_BETWEEN_LABELS;
             }
         }
-
-
-//        for (int i = 0; i < Constants.AVENUE_COUNT; ++i) {
-//            for (int j = 0; j < Constants.STREET_COUNT; ++j) {
-//                drawRoad(i, j, vPMatrix, /* isStreet= */ true);
-//                drawRoad(i, j, vPMatrix, /* isStreet= */ false);
-//            }
-//        }
-    }
-
-    private void drawRoad(int i, int j, float[] vPMatrix, boolean isStreet) {
-        float[] translationM = new float[16];
-        Matrix.setIdentityM(translationM, 0);
-        Matrix.translateM(translationM, 0,
-                i * Constants.CITY_BLOCK_WIDTH + Constants.ROAD_WIDTH / 2.f,
-                0,
-                j * Constants.CITY_BLOCK_WIDTH - Constants.ROAD_WIDTH /2.f);
-        float[] scratchM = new float[16];
-
-        float[] rotationM = new float[16];
-        if (!isStreet) {
-            Matrix.setRotateM(rotationM, 0, -90.f, 0, 1.f, 0.f);
-        } else {
-            Matrix.setIdentityM(rotationM, 0);
-        }
-
-        Matrix.multiplyMM(scratchM, 0, translationM, 0, rotationM, 0);
-        Matrix.multiplyMM(scratchM, 0, vPMatrix, 0, scratchM, 0);
-
-        //road.draw(scratchM, streetColor, fogColor);
-
     }
 }

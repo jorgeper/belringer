@@ -12,7 +12,11 @@ public class Building {
     private final float h;
 
     Building(Context context, String name, float x, float z, float w, float h) {
-        this.name = new Text(context, name, Constants.BUILDING_TEXT_COLOR, 0, 0, Constants.BUILDING_LABEL_HEIGHT);
+        if (name != null) {
+            this.name = new Text(context, name, Constants.BUILDING_TEXT_COLOR, 0, 0, Constants.BUILDING_LABEL_HEIGHT);
+        } else {
+            this.name = null;
+        }
         building = new Plane(context, 2, 2, w, h);
         this.x = x;
         this.z = z;
@@ -29,9 +33,11 @@ public class Building {
 
         building.draw(scratchM, Constants.BUILDING_COLOR, Constants.FOG_COLOR);
 
-        Matrix.setIdentityM(translationM, 0);
-        Matrix.translateM(translationM, 0, x + w / 2 - name.getWidth() / 2, 0, z + h / 2 - name.getHeight() / 2);
-        Matrix.multiplyMM(scratchM, 0, vpMatrix, 0, translationM, 0);
-        name.draw(scratchM);
+        if (name != null) {
+            Matrix.setIdentityM(translationM, 0);
+            Matrix.translateM(translationM, 0, x + w / 2 - name.getWidth() / 2, 0, z + h / 2 - name.getHeight() / 2);
+            Matrix.multiplyMM(scratchM, 0, vpMatrix, 0, translationM, 0);
+            name.draw(scratchM);
+        }
     }
 }

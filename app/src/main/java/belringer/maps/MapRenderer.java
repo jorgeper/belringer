@@ -4,7 +4,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -40,10 +39,12 @@ public class MapRenderer implements GLSurfaceView.Renderer {
     private CityModel city;
     private Building ozgesPalace;
     private Park centralPark;
+    private CityBlock testCityBlock;
     private long time;
     private MapRendererListener listener;
     private CameraType cameraType = CameraType.AERIAL;
     private boolean isDirty = true;
+    private CityBlocks cityBlocks;
 
     MapRenderer(Context context, MapRendererListener listener) {
         this.context = context;
@@ -82,17 +83,19 @@ public class MapRenderer implements GLSurfaceView.Renderer {
         axes = new Axes(context);
         grid = new Grid(context, 1000, 1);
 
+        testCityBlock = new CityBlock(context, 4, 6,city);
+
         centralPark = new Park(context, "Central Park",
-                city.withSidewalk(city.streetOffset(5)),
-                city.withSidewalk(city.avenueOffset(4)),
-                city.wholeCityBlock(),
-                city.wholeCityBlock());
+                city.withSidewalk(city.avenueX(5)),
+                city.withSidewalk(city.streetZ(4)),
+                city.streetBlockWidth(),
+                city.avenueBlockHeight());
 
         ozgesPalace = new Building(context,"Ozge's Palace",
-                city.withSidewalk(city.streetOffset(5)),
-                city.withSidewalk(city.avenueOffset(5)),
-                city.wholeCityBlock(),
-                city.wholeCityBlock());
+                city.withSidewalk(city.avenueX(5)),
+                city.withSidewalk(city.streetZ(5)),
+                city.streetBlockWidth(),
+                city.avenueBlockHeight());
 
         camera = new Camera(time, 0.f, 0.f, 0.f);
 
@@ -103,12 +106,12 @@ public class MapRenderer implements GLSurfaceView.Renderer {
         location = new Location(context);
 
         // Start at the corner of the city, looking north.
-        nextX = city.streetOffset(6);
-        nextZ = city.avenueOffset(6);
+        nextX = city.streetZ(6);
+        nextZ = city.avenueX(6);
         location.moveTo(nextX, nextZ, false);
         location.setAngle(0, false);
         cityName = new Text(context, "Welcome to Werevra", Constants.ROAD_TEXT_COLOR, 0, -1, 0.5f);
-
+        cityBlocks = new CityBlocks(context, city);
         camera.lookAt(location.getPosition(), location.getDirection(), cameraType, false);
 
         location.setListener(() -> {
@@ -171,12 +174,14 @@ public class MapRenderer implements GLSurfaceView.Renderer {
 
         //cityName.draw(vpMatrix);
 
+        cityBlocks.draw(vpMatrix);
         centralPark.draw(vpMatrix);
         ozgesPalace.draw(vpMatrix);
+        testCityBlock.draw(vpMatrix);
         location.draw(vpMatrix);
 
         // Debugging aids.
-//        grid.draw(vpMatrix, fogColor);
+        grid.draw(vpMatrix, fogColor);
 //        axes.draw(vpMatrix);
     }
 
