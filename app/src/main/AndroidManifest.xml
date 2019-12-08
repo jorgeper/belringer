@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
         <activity android:name="belringer.maps.app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

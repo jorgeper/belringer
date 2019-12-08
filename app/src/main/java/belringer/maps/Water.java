@@ -3,7 +3,7 @@ package belringer.maps;
 import android.content.Context;
 import android.opengl.Matrix;
 
-public class Park {
+public class Water {
     private final Plane park;
     private final Text name;
     private final float x;
@@ -11,9 +11,9 @@ public class Park {
     private final float w;
     private final float h;
 
-    Park(Context context, String name, float x, float z, float w, float h) {
+    Water(Context context, String name, float x, float z, float w, float h) {
         if (name != null) {
-            this.name = new Text(context, name, Constants.PARK_TEXT_COLOR, 0, 0, Constants.BUILDING_LABEL_HEIGHT);
+            this.name = new Text(context, name, Constants.WATER_TEXT_COLOR, 0, 0, Constants.BUILDING_LABEL_HEIGHT);
         } else {
             this.name = null;
         }
@@ -24,14 +24,14 @@ public class Park {
         this.h = h;
     }
 
+    float[] scratchM = new float[16];
+    float[] translationM = new float[16];
     void draw(float[] vpMatrix) {
-        float[] scratchM = new float[16];
-        float[] translationM = new float[16];
         Matrix.setIdentityM(translationM, 0);
         Matrix.translateM(translationM, 0, x, 0, z);
         Matrix.multiplyMM(scratchM, 0, vpMatrix, 0, translationM, 0);
 
-        park.draw(scratchM, Constants.PARK_COLOR, Constants.FOG_COLOR);
+        park.draw(scratchM, Constants.WATER_COLOR, Constants.FOG_COLOR);
 
         if (name != null) {
             Matrix.setIdentityM(translationM, 0);

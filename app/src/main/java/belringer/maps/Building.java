@@ -1,6 +1,7 @@
 package belringer.maps;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.opengl.Matrix;
 
 public class Building {
@@ -10,8 +11,13 @@ public class Building {
     private final float z;
     private final float w;
     private final float h;
+    private final Color color;
 
     Building(Context context, String name, float x, float z, float w, float h) {
+        this(context, name, x, z, w, h, Constants.BUILDING_COLOR);
+    }
+
+    Building(Context context, String name, float x, float z, float w, float h, Color color) {
         if (name != null) {
             this.name = new Text(context, name, Constants.BUILDING_TEXT_COLOR, 0, 0, Constants.BUILDING_LABEL_HEIGHT);
         } else {
@@ -22,6 +28,7 @@ public class Building {
         this.z = z;
         this.w = w;
         this.h = h;
+        this.color = color;
     }
 
     void draw(float[] vpMatrix) {
@@ -31,7 +38,7 @@ public class Building {
         Matrix.translateM(translationM, 0, x, 0, z);
         Matrix.multiplyMM(scratchM, 0, vpMatrix, 0, translationM, 0);
 
-        building.draw(scratchM, Constants.BUILDING_COLOR, Constants.FOG_COLOR);
+        building.draw(scratchM, color, Constants.FOG_COLOR);
 
         if (name != null) {
             Matrix.setIdentityM(translationM, 0);

@@ -10,9 +10,9 @@ class CityModel {
     static final float AVENUE_BLOCK_HEIGHT = CityModel.AVENUE_LENGTH / (CityModel.STREET_COUNT - 1);
     static final float STREET_BLOCK_WIDTH = CityModel.STREET_LENGTH / (CityModel.AVENUE_COUNT - 1);
     static final float[] CITY_CENTER = new float[] { STREET_LENGTH / 2, AVENUE_LENGTH / 2};
-    static final int BUILDINGS_PER_BLOCK_STREET = 4; // 1..3
-    static final int BUILDINGS_PER_BLOCK_AVENUE = 5; // 1..4
-    static final float BUILDING_ALLEY_WIDTH = 0.1f;
+    static final int BUILDINGS_PER_BLOCK_STREET = 3; // 1..3
+    static final int BUILDINGS_PER_BLOCK_AVENUE = 4; // 1..4
+    static final float BUILDING_ALLEY_WIDTH = 0.05f;
 
     private final SparseArray<String> streets = new SparseArray<>();
     private final SparseArray<String> avenues = new SparseArray<>();

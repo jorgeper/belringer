@@ -167,7 +167,7 @@ class Location {
         // Debugging aid: draw the direction vector.
         float[] dir = getDirection();
         float[] dirLine = new float[] { position[0], position[1], position[2], dir[0] + position[0], dir[1] + position[1], dir[2] + position[2]};
-        directionLine.draw(mvpMatrix, Color.valueOf(0xffff0000), dirLine);
+        //directionLine.draw(mvpMatrix, Color.valueOf(0xffff0000), dirLine);
     }
 
     public void setListener(LocationListener listener) {
